@@ -1,0 +1,7 @@
+plan.md
+*.sum
+*.mod
+.env
+/go.mod
+/go.sum
+*.log
