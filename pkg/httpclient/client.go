@@ -61,10 +61,15 @@ func (c *Client) Do(req *http.Request) (*http.Response, error) {
 		msg := fmt.Sprintf("Ждём %v перед следующей попыткой", delay)
 		c.logger.Info(msg)
 
+		if req.Body != nil && req.GetBody != nil {
+			newBody, err := req.GetBody()
+			if err != nil {
+				return resp, err
+			}
+			req.Body = newBody
+		}
+
 		time.Sleep(delay)
 	}
-
 	return resp, lastErr
-	
-
 }
