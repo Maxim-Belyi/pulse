@@ -1,8 +1,10 @@
 package httpclient
 
 import (
+	"fmt"
 	"net/http"
 	"pulse/pkg/logger"
+	"strconv"
 	"time"
 )
 
@@ -48,8 +50,21 @@ func (c *Client) Do(req *http.Request) (*http.Response, error) {
 			c.logger.Info("Ошибка запроса, превышено количество попыток")
 			break
 		}
-		time.Sleep(c.baseRetryDelay)
+		delay := c.baseRetryDelay * time.Duration(1<<i)
+		if resp != nil && resp.StatusCode == 429 {
+			retryAfter := resp.Header.Get("Retry-After")
+
+			if sec, err := strconv.Atoi(retryAfter); err == nil {
+				delay = time.Duration(sec) * time.Second
+			}
+		}
+		msg := fmt.Sprintf("Ждём %v перед следующей попыткой", delay)
+		c.logger.Info(msg)
+
+		time.Sleep(delay)
 	}
+
 	return resp, lastErr
+	
 
 }
