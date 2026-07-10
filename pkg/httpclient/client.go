@@ -44,7 +44,6 @@ func (c *Client) Do(req *http.Request) (*http.Response, error) {
 				return resp, nil
 			}
 			resp.Body.Close()
-
 		}
 		if i == c.maxRetries {
 			c.logger.Info("Ошибка запроса, превышено количество попыток")
@@ -68,8 +67,13 @@ func (c *Client) Do(req *http.Request) (*http.Response, error) {
 			}
 			req.Body = newBody
 		}
+		select {
+		case <-req.Context().Done():
+			return resp, req.Context().Err()
 
-		time.Sleep(delay)
+		case <-time.After(delay):
+			//если мы тут, значит ждём
+		}
 	}
 	return resp, lastErr
 }
