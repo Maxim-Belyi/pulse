@@ -16,7 +16,7 @@ type Event struct {
 	ExternalID  string     `json:"external_id"`
 	Title       string     `json:"title"`
 	Source      SourceType `json:"source"`
-	Type        EventType `json:"type"`
+	Type        EventType  `json:"type"`
 	Payload     []byte     `json:"payload"`
 	CollectedAt time.Time  `json:"collected_at"`
 	OccuredAt   time.Time  `json:"occured_time"`

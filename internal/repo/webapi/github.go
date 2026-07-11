@@ -65,14 +65,20 @@ func (a *Adapter) Fetch(ctx context.Context) ([]*entity.Event, error) {
 
 	var result []*entity.Event
 	for _, item := range ghEvents {
+
+		payloadBytes, err := json.Marshal(item)
+		if err != nil {
+			return nil, err
+		}
 		event := &entity.Event{
-			ID:         item.ID,
-			ExternalID: item.ID,
-			Source:     entity.SourceGitHub,
-			Type:       entity.EventType(item.Type),
-			Title:      item.Repo.Name,
-			OccuredAt:  item.CreatedAt,
-			CollectedAt:  time.Now(),
+			ID:          item.ID,
+			ExternalID:  item.ID,
+			Source:      entity.SourceGitHub,
+			Type:        entity.EventType(item.Type),
+			Title:       item.Repo.Name,
+			OccuredAt:   item.CreatedAt,
+			CollectedAt: time.Now(),
+			Payload:     payloadBytes,
 		}
 		result = append(result, event)
 	}
