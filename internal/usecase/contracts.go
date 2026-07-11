@@ -16,3 +16,7 @@ type EventRepository interface {
 type CacheRepository interface {
 	IncSourceCount(ctx context.Context, source entity.SourceType) (error)
 }
+
+type EventSource interface {
+	Fetch(ctx context.Context) ([]*entity.Event, error)
+}
