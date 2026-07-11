@@ -69,7 +69,7 @@ func (a *Adapter) Fetch(ctx context.Context) ([]*entity.Event, error) {
 			ID:         item.ID,
 			ExternalID: item.ID,
 			Source:     entity.SourceGitHub,
-			Type:       entity.SourceType(item.Type),
+			Type:       entity.EventType(item.Type),
 			Title:      item.Repo.Name,
 			OccuredAt:  item.CreatedAt,
 			CollectedAt:  time.Now(),
