@@ -15,7 +15,7 @@ type PostgresConfig struct {
 type RabbitConfig struct {
 	Port     int    `env:"RABBIT_HOST" envDefault:"5672"`
 	User     string `env:"RABBIT_USER" envDefault:"guest"`
-	Password string `env:"RABBIT_PASS" env:",required"`
+	Password string `env:"RABBIT_PASS" env:"required"`
 }
 
 type RedisConfig struct {
