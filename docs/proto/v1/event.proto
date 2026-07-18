@@ -1,0 +1,26 @@
+syntax="proto3";
+
+package event.v1;
+
+option go_package = "pulse/api/pb/event_v1";
+
+import "google/protobuf/timestamp.proto";
+
+service EventService {
+  rpc PublishEvent(EventRequest) returns (EventResponse);
+}
+
+message EventRequest {
+  string                    id           = 1;
+  string                    external_id  = 2;
+  string                    title        = 3;
+  string                    source       = 4;
+  string                    type         = 5;
+  bytes                     payload      = 6;
+  google.protobuf.Timestamp collected_at = 7;
+  google.protobuf.Timestamp occurred_at   = 8;
+}
+
+message EventResponse {
+    string id = 1;
+}
