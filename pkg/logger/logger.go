@@ -42,5 +42,5 @@ func (l *Logger) Info(msg string) {
 }
 
 func (l *Logger) Error(err error, msg string) {
-	l.log.Error().Msg(msg)
+	l.log.Error().Err(err).Msg(msg)
 }
