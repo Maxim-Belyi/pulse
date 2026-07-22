@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"pulse/internal/entity"
 	"pulse/pkg/logger"
+	"fmt"
 
 	"github.com/rabbitmq/amqp091-go"
 )
@@ -44,8 +45,8 @@ func (p *Publisher) Publish(ctx context.Context, event *entity.Event) error {
 	)
 	if err != nil {
 		p.logger.Error(err, "ошибка публикации")
-		return err
+		return fmt.Errorf("ошибка публикации: %w", err)
 	}
 	p.logger.Info("сообщение отправлено")
-	return err
+	return fmt.Errorf("amqp: сообщение отправлено: %w", err)
 }
