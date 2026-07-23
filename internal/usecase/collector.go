@@ -40,13 +40,12 @@ func (c *Collector) Start(ctx context.Context, interval time.Duration) <-chan *e
 				case <-ticker.C:
 					events, err := e.Fetch(ctx)
 					if err != nil {
-						c.logger.Error(err, "Ошибка при сборе данных")
+						c.logger.Error(err, "ошибка при сборе данных")
 						continue
 					}
 					for _, event := range events {
 						select {
 						case out <- event:
-
 						case <-ctx.Done():
 							return
 						}

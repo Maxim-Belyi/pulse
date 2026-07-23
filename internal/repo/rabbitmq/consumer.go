@@ -2,12 +2,19 @@ package rabbitmq
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"pulse/internal/entity"
 	"pulse/pkg/logger"
 	"sync"
 
 	"github.com/rabbitmq/amqp091-go"
 )
+
+type EventDelivery struct {
+	Event    *entity.Event
+	Delivery amqp091.Delivery
+}
 
 type Consumer struct {
 	logger    *logger.Logger
@@ -23,7 +30,7 @@ func NewConsumer(logger *logger.Logger, ch *amqp091.Channel, queueName string) *
 	}
 }
 
-func (c *Consumer) Start(ctx context.Context, workersCount int) error {
+func (c *Consumer) Start(ctx context.Context, workersCount int, outchan chan<- EventDelivery) error {
 	delivieries, err := c.ch.Consume(
 		c.queueName,
 		"",
@@ -34,7 +41,7 @@ func (c *Consumer) Start(ctx context.Context, workersCount int) error {
 		nil,
 	)
 	if err != nil {
-		return fmt.Errorf("ошибка коньсюмера: %w", err)				
+		return fmt.Errorf("ошибка коньсюмера: %w", err)
 	}
 	var wg sync.WaitGroup
 	for i := 0; i < workersCount; i++ {
@@ -42,12 +49,12 @@ func (c *Consumer) Start(ctx context.Context, workersCount int) error {
 
 		go func(workerId int) {
 			defer wg.Done()
-			defer func(){
+			defer func() {
 				if r := recover(); r != nil {
 					c.logger.Error(fmt.Errorf("%v", r), fmt.Sprintf("воркер %d поймал панику", workerId))
 				}
 			}()
-			
+
 			for {
 				select {
 				case <-ctx.Done():
@@ -56,6 +63,22 @@ func (c *Consumer) Start(ctx context.Context, workersCount int) error {
 				case msg, ok := <-delivieries:
 					if !ok {
 						return
+					}
+
+					event := &entity.Event{}
+					err := json.Unmarshal(msg.Body, event)
+					if err != nil {
+						msg.Nack(false, false)
+						text := fmt.Sprintf("ошибка парсинга ID: %s, RoutingKey: %s", msg.MessageId, msg.RoutingKey)
+						c.logger.Error(err, text)
+						continue
+					}
+					deliveryObj := EventDelivery{Event: event, Delivery: msg}
+					select {
+					case outchan <- deliveryObj:
+					case <-ctx.Done():
+						return
+
 					}
 					text := fmt.Sprintf("консьюмер получил сообщение! ID: %s, RoutingKey: %s", msg.MessageId, msg.RoutingKey)
 					c.logger.Info(text)
