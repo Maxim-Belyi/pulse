@@ -5,16 +5,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"pulse/internal/entity"
+	"pulse/internal/usecase"
 	"pulse/pkg/logger"
 	"sync"
 
 	"github.com/rabbitmq/amqp091-go"
 )
-
-type EventDelivery struct {
-	Event    *entity.Event
-	Delivery amqp091.Delivery
-}
 
 type Consumer struct {
 	logger    *logger.Logger
@@ -30,7 +26,7 @@ func NewConsumer(logger *logger.Logger, ch *amqp091.Channel, queueName string) *
 	}
 }
 
-func (c *Consumer) Start(ctx context.Context, workersCount int, outchan chan<- EventDelivery) error {
+func (c *Consumer) Start(ctx context.Context, workersCount int, outchan chan<- usecase.ProcessingMessage) error {
 	delivieries, err := c.ch.Consume(
 		c.queueName,
 		"",
@@ -73,9 +69,13 @@ func (c *Consumer) Start(ctx context.Context, workersCount int, outchan chan<- E
 						c.logger.Error(err, text)
 						continue
 					}
-					deliveryObj := EventDelivery{Event: event, Delivery: msg}
+					msgForUseCase := usecase.ProcessingMessage{
+						Event: event,
+						Ack:   func() error { return msg.Ack(false) },
+						Nack:  func() error { return msg.Nack(false, true) },
+					}
 					select {
-					case outchan <- deliveryObj:
+					case outchan <- msgForUseCase:
 					case <-ctx.Done():
 						return
 

@@ -20,3 +20,9 @@ type CacheRepository interface {
 type EventSource interface {
 	Fetch(ctx context.Context) ([]*entity.Event, error)
 }
+
+type ProcessingMessage struct {
+	Event *entity.Event
+	Ack   func() error
+	Nack  func() error
+}
