@@ -44,7 +44,7 @@ func (gs *GracefulShutdown) Wait(ctx context.Context, timeout time.Duration) {
 
 			gs.log.Info("Начинаем закрытие: " + n)
 			if err := operation(timeoutCtx); err != nil {
-				gs.log.Error(err, "Ошибка при закрытии ресурса" + n)
+				gs.log.Error(err, "ошибка при закрытии ресурса" + n)
 			}
 		}(name, op)
 	}
@@ -56,9 +56,9 @@ func (gs *GracefulShutdown) Wait(ctx context.Context, timeout time.Duration) {
 
 	select {
 	case <- done:
-		gs.log.Info("Все процессы завершены успешно")
+		gs.log.Info("все процессы завершены успешно")
 
 	case <- timeoutCtx.Done():
-		gs.log.Info("Таймаут Graseful Shutdown! Принудительное завершение")
+		gs.log.Info("таймаут Graseful Shutdown! Принудительное завершение")
 	}
 }
