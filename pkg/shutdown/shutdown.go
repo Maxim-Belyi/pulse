@@ -28,7 +28,7 @@ func (gs *GracefulShutdown) Add(name string, op Operation) {
 
 func (gs *GracefulShutdown) Wait(ctx context.Context, timeout time.Duration) {
 	<- ctx.Done()
-	gs.log.Info("Получен сигнал остановки, запуск Graceful Shutdown...")
+	gs.log.Info("получен сигнал остановки, запуск Graceful Shutdown...")
 
 	timeoutCtx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
