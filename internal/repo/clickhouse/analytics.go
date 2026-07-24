@@ -77,17 +77,16 @@ func (a *AnalyticsRepository) GetHourlyTrends(ctx context.Context, since time.Ti
 	result := make([]usecase.TrendStat, 0)
 
 	for rows.Next() {
-		var hourBacket time.Time
+		var hourBucket time.Time
 		var totalEvents uint64
 
-		err := rows.Scan(&hourBacket, totalEvents)
+		err := rows.Scan(&hourBucket, &totalEvents)
 		if err != nil {
-			return nil, fmt.Errorf("db conn scan: %w", err)
-
+			return nil, fmt.Errorf("GetHourlyTrends scan: %w", err)
 		}
 
 		stat := usecase.TrendStat{
-			HourBacket: hourBacket,
+			HourBucket:  hourBucket,
 			TotalEvents: totalEvents,
 		}
 		result = append(result, stat)

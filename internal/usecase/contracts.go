@@ -5,6 +5,7 @@ import (
 	"pulse/internal/entity"
 	"time"
 )
+
 type ProcessingMessage struct {
 	Event *entity.Event
 	Ack   func() error
@@ -12,25 +13,25 @@ type ProcessingMessage struct {
 }
 
 type TrendStat struct {
-	HourBacket time.Time
+	HourBucket  time.Time
 	TotalEvents uint64
 }
 
 type SourceStats struct {
-	Source string
+	Source      string
 	TotalEvents uint64
 }
 
 type EventPublisher interface {
-	Publish(ctx context.Context, event *entity.Event) (error)
+	Publish(ctx context.Context, event *entity.Event) error
 }
 
 type EventRepository interface {
-	SaveBatch(ctx context.Context, events []*entity.Event) (error)
+	SaveBatch(ctx context.Context, events []*entity.Event) error
 }
 
 type CacheRepository interface {
-	IncSourceCount(ctx context.Context, source entity.SourceType) (error)
+	IncSourceCount(ctx context.Context, source entity.SourceType) error
 }
 
 type EventSource interface {
