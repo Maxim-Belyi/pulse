@@ -7,8 +7,6 @@ import (
 	"time"
 )
 
-
-
 type Processor struct {
 	logger        *logger.Logger
 	repo          EventRepository
