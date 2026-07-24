@@ -32,8 +32,8 @@ type EventRepository interface {
 
 type CacheRepository interface {
 	IncSourceCount(ctx context.Context, source entity.SourceType) error
-	Set(ctx context.Context, key string) ([]byte, error)
-	Get(ctx context.Context, key string, data []byte, ttl time.Duration) error
+	Get(ctx context.Context, key string) ([]byte, error)
+	Set(ctx context.Context, key string, data []byte, ttl time.Duration) error
 }
 
 type EventSource interface {
@@ -41,7 +41,7 @@ type EventSource interface {
 }
 
 type AnalyticsRepository interface {
-	GetSources(ctx context.Context, since time.Time) ([]SourceStats, error)
+	GetTopSources(ctx context.Context, since time.Time) ([]SourceStats, error)
 	GetHourlyTrends(ctx context.Context, since time.Time) ([]TrendStat, error)
 }
 
