@@ -31,11 +31,11 @@ func (a *AnalyticsUseCase) GetTopSources(ctx context.Context, since time.Time) (
 		json.Unmarshal(cachedBytes, &result)
 		return result, nil
 	}
-	a.logger.Info("кеша нет или он недоступен") //TODO: убрать
+	a.logger.Info("кеша GetTopSources нет или он недоступен") //TODO убрать
 
 	result, err := a.repo.GetTopSources(ctx, since)
 	if err != nil {
-		a.logger.Error(err, "ошибка бд")
+		a.logger.Error(err, "GetTopSources: ошибка бд")
 		return nil, err
 	}
 
@@ -46,3 +46,26 @@ func (a *AnalyticsUseCase) GetTopSources(ctx context.Context, since time.Time) (
 	return result, nil
 }
 
+func (a *AnalyticsUseCase) GetHourlyTrends(ctx context.Context, since time.Time) ([]TrendStat,error) {
+	hourlyTrends := fmt.Sprintf("top_hour_sources:%d", since.Unix())
+
+	cachedBytes, err := a.cache.Get(ctx, hourlyTrends)
+	if err == nil {
+		var result []TrendStat
+		json.Unmarshal(cachedBytes, &result)
+		return result, nil
+	}
+	a.logger.Info("кеша GetHourlyTrends нет или он не доступен") //TODO убрать
+
+	result, err := a.repo.GetHourlyTrends(ctx, since)
+	if err != nil {
+		a.logger.Error(err, "GetHourlyTrends: ошибка бд")
+		return nil, err
+	}
+
+	bytesCache, err := json.Marshal(result)
+	if err == nil {
+		a.cache.Set(ctx, hourlyTrends, bytesCache, 5* time.Second)
+	}
+	return result, nil
+}
