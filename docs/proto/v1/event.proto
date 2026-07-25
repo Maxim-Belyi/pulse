@@ -18,9 +18,9 @@ message EventRequest {
   string                    type         = 5;
   bytes                     payload      = 6;
   google.protobuf.Timestamp collected_at = 7;
-  google.protobuf.Timestamp occurred_at   = 8;
+  google.protobuf.Timestamp occurred_at  = 8;
 }
 
 message EventResponse {
-    string id = 1;
+  string id = 1;
 }

@@ -30,8 +30,9 @@ func (a *AnalyticsUseCase) GetTopSources(ctx context.Context, since time.Time) (
 		var result []SourceStats
 		if err := json.Unmarshal(cachedBytes, &result); err == nil {
 			return result, nil
+		} else {
+			a.logger.Error(err, "ошибка десереализации кеша GetTopSources")
 		}
-		return result, nil
 	}
 	a.logger.Info("кеша GetTopSources нет или он недоступен") //TODO убрать
 
@@ -54,15 +55,18 @@ func (a *AnalyticsUseCase) GetHourlyTrends(ctx context.Context, since time.Time)
 	cachedBytes, err := a.cache.Get(ctx, hourlyTrends)
 	if err == nil {
 		var result []TrendStat
-		json.Unmarshal(cachedBytes, &result)
-		return result, nil
+		if err := json.Unmarshal(cachedBytes, &result); err == nil {
+			return result,nil
+		} else {
+			a.logger.Error(err, "ошибка десереализации кеша GetHourlyTrends")
+		}
 	}
 	a.logger.Info("кеша GetHourlyTrends нет или он не доступен") //TODO убрать
 
 	result, err := a.repo.GetHourlyTrends(ctx, since)
 	if err != nil {
 		a.logger.Error(err, "GetHourlyTrends: ошибка бд")
-		return nil, err
+		return nil, fmt.Errorf("AnalyticsUseCase - GetHourlyTrends: %w", err)
 	}
 
 	bytesCache, err := json.Marshal(result)
