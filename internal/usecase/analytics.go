@@ -28,7 +28,9 @@ func (a *AnalyticsUseCase) GetTopSources(ctx context.Context, since time.Time) (
 	cachedBytes, err := a.cache.Get(ctx, cacheKey)
 	if err == nil {
 		var result []SourceStats
-		json.Unmarshal(cachedBytes, &result)
+		if err := json.Unmarshal(cachedBytes, &result); err == nil {
+			return result, nil
+		}
 		return result, nil
 	}
 	a.logger.Info("кеша GetTopSources нет или он недоступен") //TODO убрать
@@ -36,12 +38,12 @@ func (a *AnalyticsUseCase) GetTopSources(ctx context.Context, since time.Time) (
 	result, err := a.repo.GetTopSources(ctx, since)
 	if err != nil {
 		a.logger.Error(err, "GetTopSources: ошибка бд")
-		return nil, err
+		return nil, fmt.Errorf("AnalyticsUseCase - GetTopSources: %w", err)
 	}
 
 	bytesToCache, err := json.Marshal(result)
 	if err == nil {
-		a.cache.Set(ctx, cacheKey, bytesToCache, 5 * time.Minute) 
+		a.cache.Set(ctx, cacheKey, bytesToCache, time.Hour) 
 	}
 	return result, nil
 }
@@ -65,7 +67,7 @@ func (a *AnalyticsUseCase) GetHourlyTrends(ctx context.Context, since time.Time)
 
 	bytesCache, err := json.Marshal(result)
 	if err == nil {
-		a.cache.Set(ctx, hourlyTrends, bytesCache, 5* time.Second)
+		a.cache.Set(ctx, hourlyTrends, bytesCache, time.Hour)
 	}
 	return result, nil
 }
