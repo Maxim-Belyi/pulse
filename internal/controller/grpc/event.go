@@ -32,7 +32,7 @@ func (e *EventController) PublishEvent(ctx context.Context, req *pb.EventRequest
 		Type:        entity.EventType(req.Type),
 		Payload:     req.Payload,
 		CollectedAt: req.CollectedAt.AsTime(),
-		OccuredAt:   req.OccurredAt.AsTime(),
+		OccurredAt:  req.OccurredAt.AsTime(),
 	}
 
 	err := e.useCase.ProcessEvent(ctx, event)

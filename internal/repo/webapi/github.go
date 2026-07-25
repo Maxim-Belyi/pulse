@@ -76,7 +76,7 @@ func (a *Adapter) Fetch(ctx context.Context) ([]*entity.Event, error) {
 			Source:      entity.SourceGitHub,
 			Type:        entity.EventType(item.Type),
 			Title:       item.Repo.Name,
-			OccuredAt:   item.CreatedAt,
+			OccurredAt:  item.CreatedAt,
 			CollectedAt: time.Now(),
 			Payload:     payloadBytes,
 		}

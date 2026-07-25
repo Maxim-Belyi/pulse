@@ -44,9 +44,3 @@ type AnalyticsRepository interface {
 	GetTopSources(ctx context.Context, since time.Time) ([]SourceStats, error)
 	GetHourlyTrends(ctx context.Context, since time.Time) ([]TrendStat, error)
 }
-
-type cacheRepository interface {
-	IncSourceCout(ctx context.Context, source entity.SourceType) error
-	Get(ctx context.Context, key string) ([]byte, error)
-	Set(ctx context.Context, key string, data []byte, ttl time.Duration) error
-}

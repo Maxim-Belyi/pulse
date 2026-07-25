@@ -34,7 +34,7 @@ func (a *AnalyticsUseCase) GetTopSources(ctx context.Context, since time.Time) (
 			a.logger.Error(err, "ошибка десереализации кеша GetTopSources")
 		}
 	}
-	a.logger.Info("кеша GetTopSources нет или он недоступен") //TODO убрать
+	a.logger.Info("кеша GetTopSources нет или он недоступен") 
 
 	result, err := a.repo.GetTopSources(ctx, since)
 	if err != nil {
@@ -61,7 +61,7 @@ func (a *AnalyticsUseCase) GetHourlyTrends(ctx context.Context, since time.Time)
 			a.logger.Error(err, "ошибка десереализации кеша GetHourlyTrends")
 		}
 	}
-	a.logger.Info("кеша GetHourlyTrends нет или он не доступен") //TODO убрать
+	a.logger.Info("кеша GetHourlyTrends нет или он не доступен") 
 
 	result, err := a.repo.GetHourlyTrends(ctx, since)
 	if err != nil {
