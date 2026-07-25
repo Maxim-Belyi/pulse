@@ -22,5 +22,4 @@ message SourceStats {
 
 message SourceResponse {
     repeated SourceStats stats = 1;
-    
 }
