@@ -19,16 +19,16 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	AnalyticsService_SourceTopEvents_FullMethodName = "/analytics.v1.AnalyticsService/SourceTopEvents"
-	AnalyticsService_SourceEvents_FullMethodName    = "/analytics.v1.AnalyticsService/SourceEvents"
+	AnalyticsService_GetTopSource_FullMethodName    = "/analytics.v1.AnalyticsService/GetTopSource"
+	AnalyticsService_GetHourlyTrends_FullMethodName = "/analytics.v1.AnalyticsService/GetHourlyTrends"
 )
 
 // AnalyticsServiceClient is the client API for AnalyticsService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AnalyticsServiceClient interface {
-	SourceTopEvents(ctx context.Context, in *GetTopSourcesRequest, opts ...grpc.CallOption) (*SourceResponse, error)
-	SourceEvents(ctx context.Context, in *SourceStats, opts ...grpc.CallOption) (*SourceResponse, error)
+	GetTopSource(ctx context.Context, in *GetTopSourcesRequest, opts ...grpc.CallOption) (*SourceResponse, error)
+	GetHourlyTrends(ctx context.Context, in *GetHourlyTrendsRequest, opts ...grpc.CallOption) (*GetHourlyTrendsResponse, error)
 }
 
 type analyticsServiceClient struct {
@@ -39,20 +39,20 @@ func NewAnalyticsServiceClient(cc grpc.ClientConnInterface) AnalyticsServiceClie
 	return &analyticsServiceClient{cc}
 }
 
-func (c *analyticsServiceClient) SourceTopEvents(ctx context.Context, in *GetTopSourcesRequest, opts ...grpc.CallOption) (*SourceResponse, error) {
+func (c *analyticsServiceClient) GetTopSource(ctx context.Context, in *GetTopSourcesRequest, opts ...grpc.CallOption) (*SourceResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(SourceResponse)
-	err := c.cc.Invoke(ctx, AnalyticsService_SourceTopEvents_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, AnalyticsService_GetTopSource_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *analyticsServiceClient) SourceEvents(ctx context.Context, in *SourceStats, opts ...grpc.CallOption) (*SourceResponse, error) {
+func (c *analyticsServiceClient) GetHourlyTrends(ctx context.Context, in *GetHourlyTrendsRequest, opts ...grpc.CallOption) (*GetHourlyTrendsResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(SourceResponse)
-	err := c.cc.Invoke(ctx, AnalyticsService_SourceEvents_FullMethodName, in, out, cOpts...)
+	out := new(GetHourlyTrendsResponse)
+	err := c.cc.Invoke(ctx, AnalyticsService_GetHourlyTrends_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -63,8 +63,8 @@ func (c *analyticsServiceClient) SourceEvents(ctx context.Context, in *SourceSta
 // All implementations must embed UnimplementedAnalyticsServiceServer
 // for forward compatibility.
 type AnalyticsServiceServer interface {
-	SourceTopEvents(context.Context, *GetTopSourcesRequest) (*SourceResponse, error)
-	SourceEvents(context.Context, *SourceStats) (*SourceResponse, error)
+	GetTopSource(context.Context, *GetTopSourcesRequest) (*SourceResponse, error)
+	GetHourlyTrends(context.Context, *GetHourlyTrendsRequest) (*GetHourlyTrendsResponse, error)
 	mustEmbedUnimplementedAnalyticsServiceServer()
 }
 
@@ -75,11 +75,11 @@ type AnalyticsServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedAnalyticsServiceServer struct{}
 
-func (UnimplementedAnalyticsServiceServer) SourceTopEvents(context.Context, *GetTopSourcesRequest) (*SourceResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method SourceTopEvents not implemented")
+func (UnimplementedAnalyticsServiceServer) GetTopSource(context.Context, *GetTopSourcesRequest) (*SourceResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetTopSource not implemented")
 }
-func (UnimplementedAnalyticsServiceServer) SourceEvents(context.Context, *SourceStats) (*SourceResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method SourceEvents not implemented")
+func (UnimplementedAnalyticsServiceServer) GetHourlyTrends(context.Context, *GetHourlyTrendsRequest) (*GetHourlyTrendsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetHourlyTrends not implemented")
 }
 func (UnimplementedAnalyticsServiceServer) mustEmbedUnimplementedAnalyticsServiceServer() {}
 func (UnimplementedAnalyticsServiceServer) testEmbeddedByValue()                          {}
@@ -102,38 +102,38 @@ func RegisterAnalyticsServiceServer(s grpc.ServiceRegistrar, srv AnalyticsServic
 	s.RegisterService(&AnalyticsService_ServiceDesc, srv)
 }
 
-func _AnalyticsService_SourceTopEvents_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _AnalyticsService_GetTopSource_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetTopSourcesRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AnalyticsServiceServer).SourceTopEvents(ctx, in)
+		return srv.(AnalyticsServiceServer).GetTopSource(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: AnalyticsService_SourceTopEvents_FullMethodName,
+		FullMethod: AnalyticsService_GetTopSource_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AnalyticsServiceServer).SourceTopEvents(ctx, req.(*GetTopSourcesRequest))
+		return srv.(AnalyticsServiceServer).GetTopSource(ctx, req.(*GetTopSourcesRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _AnalyticsService_SourceEvents_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SourceStats)
+func _AnalyticsService_GetHourlyTrends_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetHourlyTrendsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AnalyticsServiceServer).SourceEvents(ctx, in)
+		return srv.(AnalyticsServiceServer).GetHourlyTrends(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: AnalyticsService_SourceEvents_FullMethodName,
+		FullMethod: AnalyticsService_GetHourlyTrends_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AnalyticsServiceServer).SourceEvents(ctx, req.(*SourceStats))
+		return srv.(AnalyticsServiceServer).GetHourlyTrends(ctx, req.(*GetHourlyTrendsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -146,12 +146,12 @@ var AnalyticsService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*AnalyticsServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "SourceTopEvents",
-			Handler:    _AnalyticsService_SourceTopEvents_Handler,
+			MethodName: "GetTopSource",
+			Handler:    _AnalyticsService_GetTopSource_Handler,
 		},
 		{
-			MethodName: "SourceEvents",
-			Handler:    _AnalyticsService_SourceEvents_Handler,
+			MethodName: "GetHourlyTrends",
+			Handler:    _AnalyticsService_GetHourlyTrends_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

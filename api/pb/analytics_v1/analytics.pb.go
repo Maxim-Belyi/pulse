@@ -162,6 +162,146 @@ func (x *SourceResponse) GetStats() []*SourceStats {
 	return nil
 }
 
+type GetHourlyTrendsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Since         *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=since,proto3" json:"since,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetHourlyTrendsRequest) Reset() {
+	*x = GetHourlyTrendsRequest{}
+	mi := &file_docs_proto_v1_analytics_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetHourlyTrendsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetHourlyTrendsRequest) ProtoMessage() {}
+
+func (x *GetHourlyTrendsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_docs_proto_v1_analytics_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetHourlyTrendsRequest.ProtoReflect.Descriptor instead.
+func (*GetHourlyTrendsRequest) Descriptor() ([]byte, []int) {
+	return file_docs_proto_v1_analytics_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *GetHourlyTrendsRequest) GetSince() *timestamppb.Timestamp {
+	if x != nil {
+		return x.Since
+	}
+	return nil
+}
+
+type TrendStat struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	HourBucket    *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=hour_bucket,json=hourBucket,proto3" json:"hour_bucket,omitempty"`
+	TotalEvents   uint64                 `protobuf:"varint,2,opt,name=total_events,json=totalEvents,proto3" json:"total_events,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *TrendStat) Reset() {
+	*x = TrendStat{}
+	mi := &file_docs_proto_v1_analytics_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *TrendStat) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*TrendStat) ProtoMessage() {}
+
+func (x *TrendStat) ProtoReflect() protoreflect.Message {
+	mi := &file_docs_proto_v1_analytics_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use TrendStat.ProtoReflect.Descriptor instead.
+func (*TrendStat) Descriptor() ([]byte, []int) {
+	return file_docs_proto_v1_analytics_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *TrendStat) GetHourBucket() *timestamppb.Timestamp {
+	if x != nil {
+		return x.HourBucket
+	}
+	return nil
+}
+
+func (x *TrendStat) GetTotalEvents() uint64 {
+	if x != nil {
+		return x.TotalEvents
+	}
+	return 0
+}
+
+type GetHourlyTrendsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Trends        []*TrendStat           `protobuf:"bytes,1,rep,name=trends,proto3" json:"trends,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetHourlyTrendsResponse) Reset() {
+	*x = GetHourlyTrendsResponse{}
+	mi := &file_docs_proto_v1_analytics_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetHourlyTrendsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetHourlyTrendsResponse) ProtoMessage() {}
+
+func (x *GetHourlyTrendsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_docs_proto_v1_analytics_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetHourlyTrendsResponse.ProtoReflect.Descriptor instead.
+func (*GetHourlyTrendsResponse) Descriptor() ([]byte, []int) {
+	return file_docs_proto_v1_analytics_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *GetHourlyTrendsResponse) GetTrends() []*TrendStat {
+	if x != nil {
+		return x.Trends
+	}
+	return nil
+}
+
 var File_docs_proto_v1_analytics_proto protoreflect.FileDescriptor
 
 const file_docs_proto_v1_analytics_proto_rawDesc = "" +
@@ -173,10 +313,18 @@ const file_docs_proto_v1_analytics_proto_rawDesc = "" +
 	"\x06source\x18\x01 \x01(\tR\x06source\x12!\n" +
 	"\ftotal_events\x18\x02 \x01(\x04R\vtotalEvents\"A\n" +
 	"\x0eSourceResponse\x12/\n" +
-	"\x05stats\x18\x01 \x03(\v2\x19.analytics.v1.SourceStatsR\x05stats2\xb0\x01\n" +
-	"\x10AnalyticsService\x12S\n" +
-	"\x0fSourceTopEvents\x12\".analytics.v1.GetTopSourcesRequest\x1a\x1c.analytics.v1.SourceResponse\x12G\n" +
-	"\fSourceEvents\x12\x19.analytics.v1.SourceStats\x1a\x1c.analytics.v1.SourceResponseB\x1bZ\x19pulse/api/pb/analytics_v1b\x06proto3"
+	"\x05stats\x18\x01 \x03(\v2\x19.analytics.v1.SourceStatsR\x05stats\"J\n" +
+	"\x16GetHourlyTrendsRequest\x120\n" +
+	"\x05since\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\x05since\"k\n" +
+	"\tTrendStat\x12;\n" +
+	"\vhour_bucket\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\n" +
+	"hourBucket\x12!\n" +
+	"\ftotal_events\x18\x02 \x01(\x04R\vtotalEvents\"J\n" +
+	"\x17GetHourlyTrendsResponse\x12/\n" +
+	"\x06trends\x18\x01 \x03(\v2\x17.analytics.v1.TrendStatR\x06trends2\xc4\x01\n" +
+	"\x10AnalyticsService\x12P\n" +
+	"\fGetTopSource\x12\".analytics.v1.GetTopSourcesRequest\x1a\x1c.analytics.v1.SourceResponse\x12^\n" +
+	"\x0fGetHourlyTrends\x12$.analytics.v1.GetHourlyTrendsRequest\x1a%.analytics.v1.GetHourlyTrendsResponseB\x1bZ\x19pulse/api/pb/analytics_v1b\x06proto3"
 
 var (
 	file_docs_proto_v1_analytics_proto_rawDescOnce sync.Once
@@ -190,25 +338,31 @@ func file_docs_proto_v1_analytics_proto_rawDescGZIP() []byte {
 	return file_docs_proto_v1_analytics_proto_rawDescData
 }
 
-var file_docs_proto_v1_analytics_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_docs_proto_v1_analytics_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_docs_proto_v1_analytics_proto_goTypes = []any{
-	(*GetTopSourcesRequest)(nil),  // 0: analytics.v1.GetTopSourcesRequest
-	(*SourceStats)(nil),           // 1: analytics.v1.SourceStats
-	(*SourceResponse)(nil),        // 2: analytics.v1.SourceResponse
-	(*timestamppb.Timestamp)(nil), // 3: google.protobuf.Timestamp
+	(*GetTopSourcesRequest)(nil),    // 0: analytics.v1.GetTopSourcesRequest
+	(*SourceStats)(nil),             // 1: analytics.v1.SourceStats
+	(*SourceResponse)(nil),          // 2: analytics.v1.SourceResponse
+	(*GetHourlyTrendsRequest)(nil),  // 3: analytics.v1.GetHourlyTrendsRequest
+	(*TrendStat)(nil),               // 4: analytics.v1.TrendStat
+	(*GetHourlyTrendsResponse)(nil), // 5: analytics.v1.GetHourlyTrendsResponse
+	(*timestamppb.Timestamp)(nil),   // 6: google.protobuf.Timestamp
 }
 var file_docs_proto_v1_analytics_proto_depIdxs = []int32{
-	3, // 0: analytics.v1.GetTopSourcesRequest.since:type_name -> google.protobuf.Timestamp
+	6, // 0: analytics.v1.GetTopSourcesRequest.since:type_name -> google.protobuf.Timestamp
 	1, // 1: analytics.v1.SourceResponse.stats:type_name -> analytics.v1.SourceStats
-	0, // 2: analytics.v1.AnalyticsService.SourceTopEvents:input_type -> analytics.v1.GetTopSourcesRequest
-	1, // 3: analytics.v1.AnalyticsService.SourceEvents:input_type -> analytics.v1.SourceStats
-	2, // 4: analytics.v1.AnalyticsService.SourceTopEvents:output_type -> analytics.v1.SourceResponse
-	2, // 5: analytics.v1.AnalyticsService.SourceEvents:output_type -> analytics.v1.SourceResponse
-	4, // [4:6] is the sub-list for method output_type
-	2, // [2:4] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	6, // 2: analytics.v1.GetHourlyTrendsRequest.since:type_name -> google.protobuf.Timestamp
+	6, // 3: analytics.v1.TrendStat.hour_bucket:type_name -> google.protobuf.Timestamp
+	4, // 4: analytics.v1.GetHourlyTrendsResponse.trends:type_name -> analytics.v1.TrendStat
+	0, // 5: analytics.v1.AnalyticsService.GetTopSource:input_type -> analytics.v1.GetTopSourcesRequest
+	3, // 6: analytics.v1.AnalyticsService.GetHourlyTrends:input_type -> analytics.v1.GetHourlyTrendsRequest
+	2, // 7: analytics.v1.AnalyticsService.GetTopSource:output_type -> analytics.v1.SourceResponse
+	5, // 8: analytics.v1.AnalyticsService.GetHourlyTrends:output_type -> analytics.v1.GetHourlyTrendsResponse
+	7, // [7:9] is the sub-list for method output_type
+	5, // [5:7] is the sub-list for method input_type
+	5, // [5:5] is the sub-list for extension type_name
+	5, // [5:5] is the sub-list for extension extendee
+	0, // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_docs_proto_v1_analytics_proto_init() }
@@ -222,7 +376,7 @@ func file_docs_proto_v1_analytics_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_docs_proto_v1_analytics_proto_rawDesc), len(file_docs_proto_v1_analytics_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   3,
+			NumMessages:   6,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

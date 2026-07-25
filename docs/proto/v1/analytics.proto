@@ -7,19 +7,32 @@ option go_package = "pulse/api/pb/analytics_v1";
 import "google/protobuf/timestamp.proto";
 
 service AnalyticsService {
-    rpc SourceTopEvents(GetTopSourcesRequest) returns(SourceResponse);
-    rpc SourceEvents(SourceStats) returns(SourceResponse);
+  rpc GetTopSource(GetTopSourcesRequest) returns(SourceResponse);
+  rpc GetHourlyTrends(GetHourlyTrendsRequest) returns (GetHourlyTrendsResponse);
 }
 
 message GetTopSourcesRequest {
-    google.protobuf.Timestamp since =1;
+  google.protobuf.Timestamp since = 1;
 }
 
 message SourceStats {
-    string source = 1;
-    uint64 total_events = 2;
+  string source       = 1;
+  uint64 total_events = 2;
 }
 
 message SourceResponse {
-    repeated SourceStats stats = 1;
+  repeated SourceStats stats = 1;
+}
+
+message GetHourlyTrendsRequest {
+  google.protobuf.Timestamp since = 1;
+}
+
+message TrendStat {
+  google.protobuf.Timestamp hour_bucket  = 1;
+  uint64                    total_events = 2;
+}
+
+message GetHourlyTrendsResponse {
+  repeated TrendStat trends = 1;
 }
