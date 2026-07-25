@@ -1,0 +1,26 @@
+syntax="proto3";
+
+package analytics.v1;
+
+option go_package = "pulse/api/pb/analytics_v1";
+
+import "google/protobuf/timestamp.proto";
+
+service AnalyticsService {
+    rpc SourceTopEvents(GetTopSourcesRequest) returns(SourceResponse);
+    rpc SourceEvents(SourceStats) returns(SourceResponse);
+}
+
+message GetTopSourcesRequest {
+    google.protobuf.Timestamp since =1;
+}
+
+message SourceStats {
+    string source = 1;
+    uint64 total_events = 2;
+}
+
+message SourceResponse {
+    repeated SourceStats stats = 1;
+    
+}
