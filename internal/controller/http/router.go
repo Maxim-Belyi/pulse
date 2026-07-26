@@ -5,7 +5,7 @@ import "github.com/gofiber/fiber/v2"
 
 func SetupRoutes(app *fiber.App, analyticsHandler *AnalyticsHandler) {
 	v1 := app.Group("/api/v1")
-	// v1.Use(jwtMiddleware)
+	v1.Use(JWTMiddleware)
 
 	analyticsGroup := v1.Group("/analytics")
 	analyticsGroup.Get("/trends", analyticsHandler.GetHourlyTrends)
