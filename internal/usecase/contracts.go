@@ -10,6 +10,7 @@ type ProcessingMessage struct {
 	Event *entity.Event
 	Ack   func() error
 	Nack  func() error
+	Ctx   context.Context
 }
 
 type TrendStat struct {

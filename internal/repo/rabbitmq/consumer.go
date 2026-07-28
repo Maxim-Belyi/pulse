@@ -71,6 +71,7 @@ func (c *Consumer) Start(ctx context.Context, workersCount int, outchan chan<- u
 					}
 					msgForUseCase := usecase.ProcessingMessage{
 						Event: event,
+						Ctx:   ctx,
 						Ack:   func() error { return msg.Ack(false) },
 						Nack:  func() error { return msg.Nack(false, true) },
 					}

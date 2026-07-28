@@ -39,7 +39,7 @@ func (p *Processor) flush(ctx context.Context, batch []ProcessingMessage) error 
 		return err
 	}
 	for _, item := range batch {
-		p.cache.IncSourceCount(ctx, item.Event.Source)
+		p.cache.IncSourceCount(item.Ctx, item.Event.Source)
 		item.Ack()
 	}
 	return err
