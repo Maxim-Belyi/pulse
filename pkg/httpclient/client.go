@@ -72,7 +72,6 @@ func (c *Client) Do(req *http.Request) (*http.Response, error) {
 			return resp, req.Context().Err()
 
 		case <-time.After(delay):
-			//если мы тут, значит ждём
 		}
 	}
 	return resp, lastErr
