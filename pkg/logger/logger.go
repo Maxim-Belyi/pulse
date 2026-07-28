@@ -28,7 +28,7 @@ func NewLogger(level string, isDev bool, serviceName string) *Logger {
 	internalLog := zerolog.New(output).
 		Level(zlevel).
 		With().
-		Str("service: ", serviceName).
+		Str("service:", serviceName).
 		Timestamp().
 		Logger()
 

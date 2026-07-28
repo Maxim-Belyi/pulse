@@ -19,5 +19,5 @@ type Event struct {
 	Type        EventType  `json:"type"`
 	Payload     []byte     `json:"payload"`
 	CollectedAt time.Time  `json:"collected_at"`
-	OccurredAt  time.Time  `json:"occured_time"`
+	OccurredAt  time.Time  `json:"occured_at"`
 }

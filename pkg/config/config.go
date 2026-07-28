@@ -9,7 +9,7 @@ type PostgresConfig struct {
 	Host     string `env:"POSTGRES_HOST" envDefault:"localhost"`
 	Port     int    `env:"POSTGRES_PORT" envDefault:"5432"`
 	User     string `env:"POSTGRES_USER" envDefault:"admin"`
-	Password string `env:"POSTGRES_PASS" env:",required"`
+	Password string `env:"POSTGRES_PASS" env:"required"`
 }
 
 type RabbitConfig struct {

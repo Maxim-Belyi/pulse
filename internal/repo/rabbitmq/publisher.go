@@ -48,5 +48,5 @@ func (p *Publisher) Publish(ctx context.Context, event *entity.Event) error {
 		return fmt.Errorf("ошибка публикации: %w", err)
 	}
 	p.logger.Info("сообщение отправлено")
-	return fmt.Errorf("amqp: сообщение отправлено: %w", err)
+	return nil	
 }
