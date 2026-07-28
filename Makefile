@@ -17,7 +17,7 @@ TEST_FLAGS   := -v -race -count=1
 
 help: ## Показать справку по командам
 	@echo ""
-	@echo "  Pulse — команды разработки"
+	@echo "Pulse — команды разработки"
 	@echo ""
 	@grep -E '^[a-zA-Z0-9_-]+:.*##' $(MAKEFILE_LIST) \
 		| awk -F':.*##' '{printf "  \033[36m%-22s\033[0m %s\n", $$1, $$2}'
